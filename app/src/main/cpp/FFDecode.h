@@ -24,6 +24,7 @@ public:
 protected:
     AVCodecContext *avCodecContext;
     AVFrame *frame = 0;
+
 };
 
 

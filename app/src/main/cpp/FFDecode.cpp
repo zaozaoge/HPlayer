@@ -34,6 +34,7 @@ bool FFDecode::Open(XParameter xParameter) {
         XLoge("%s", buf);
         return false;
     }
+    this->isAudio = avCodecContext->codec_type == AVMEDIA_TYPE_AUDIO;
     XLogi("avcodec_open2 success");
     return true;
 }

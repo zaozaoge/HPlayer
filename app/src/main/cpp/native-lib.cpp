@@ -10,7 +10,7 @@ class TestObs : public IObserver {
 public:
     void Update(XData data) override {
         IObserver::Update(data);
-       // XLogi("TestObs Update data size is %d", data.size);
+        // XLogi("TestObs Update data size is %d", data.size);
     }
 };
 
@@ -21,12 +21,20 @@ Java_com_zaozao_hplayer_MainActivity_stringFromJNI(
     std::string hello = "Hello from C++";
     IDemux *de = new FFDemux();
     auto *obs = new TestObs();
-    de->AddObs(obs);
     de->Open("/sdcard/DCIM/Camera/VID_20180215_142837.mp4");
+    //打开视频解码器
     IDecode *vDecode = new FFDecode();
     vDecode->Open(de->GetVideoParams());
+    //打开音频解码器
+    IDecode *aDecode = new FFDecode();
+    aDecode->Open(de->GetAudioParams());
+    //添加观察者
+    de->AddObs(vDecode);
+    de->AddObs(aDecode);
     de->Start();
-    XSleep(3000);
-    de->Stop();
+    vDecode->Start();
+    aDecode->Start();
+    //XSleep(3000);
+    //de->Stop();
     return env->NewStringUTF(hello.c_str());
 }
