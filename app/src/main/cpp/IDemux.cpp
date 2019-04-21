@@ -8,6 +8,9 @@
 void IDemux::Main() {
     while (!isExit) {
         XData data = Read();
-       // XLogi("Idemux Read %d", data.size);
+        if (data.size > 0) {
+            Notify(data);
+        }
+        // XLogi("Idemux Read %d", data.size);
     }
 }

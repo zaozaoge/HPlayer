@@ -4,12 +4,22 @@
 #include "FFDemux.h"
 #include "XLog.h"
 
+class TestObs : public IObserver {
+public:
+    void Update(XData data) override {
+        IObserver::Update(data);
+        XLogi("TestObs Update data size is %d", data.size);
+    }
+};
+
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_zaozao_hplayer_MainActivity_stringFromJNI(
         JNIEnv *env,
         jobject /* this */) {
     std::string hello = "Hello from C++";
     IDemux *de = new FFDemux();
+    auto *obs = new TestObs();
+    de->AddObs(obs);
     de->Open("/sdcard/DCIM/Camera/VID_20180215_142837.mp4");
     de->Start();
     XSleep(3000);
