@@ -33,7 +33,8 @@ bool FFDemux::Open(const char *url) {
     }
     this->totalMs = static_cast<int>(ic->duration / (AV_TIME_BASE / 1000));
     XLogi("total ms = %d", totalMs);
-
+    GetVideoParams();
+    GetAudioParams();
     return true;
 }
 
@@ -53,9 +54,22 @@ XData FFDemux::Read() {
     //XLogi("packet size is %d ,pts is %lld", pkt->size, pkt->pts);
     d.data = reinterpret_cast<unsigned char *>(pkt);
     d.size = pkt->size;
+
+    if (pkt->stream_index == audioStreamIndex) {
+        //如果是音频数据
+        d.isAudio = true;
+    } else if (pkt->stream_index == videoSteamIndex) {
+        //如果是视频数据
+        d.isAudio = false;
+    } else {
+        //如果两者都不是，销毁数据
+        av_packet_free(&pkt);
+        return {};
+    }
     return d;
 }
 
+//获取视频参数
 XParameter FFDemux::GetVideoParams() {
     if (!ic) {
         XLogi("GetVideoParams failed ic is NULL");
@@ -67,11 +81,30 @@ XParameter FFDemux::GetVideoParams() {
         XLogi("av_find_best_stream failed");
         return {};
     }
+    videoSteamIndex = videoIndex;
     XParameter parameter;
     parameter.parameters = ic->streams[videoIndex]->codecpar;
     return parameter;
 }
 
+//获取音频参数
+XParameter FFDemux::GetAudioParams() {
+    if (!ic) {
+        XLogi("GetAudioParams failed ic is NULL");
+        return {};
+    }
+
+    //获取音频流索引
+    int audioIndex = av_find_best_stream(ic, AVMEDIA_TYPE_AUDIO, -1, -1, 0, 0);
+    if (audioIndex < 0) {
+        XLogi("av_find_best_stream failed");
+        return {};
+    }
+    audioStreamIndex = audioIndex;
+    XParameter parameter;
+    parameter.parameters = ic->streams[audioIndex]->codecpar;
+    return parameter;
+}
 
 FFDemux::FFDemux() {
     static bool isFirst = true;
