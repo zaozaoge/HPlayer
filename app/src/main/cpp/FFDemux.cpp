@@ -39,7 +39,7 @@ bool FFDemux::Open(const char *url) {
 
 //读取一帧数据，数据由调用者清理
 XData FFDemux::Read() {
-    if (ic)
+    if (!ic)
         return {};
     XData d;
     AVPacket *pkt = av_packet_alloc();
@@ -51,7 +51,8 @@ XData FFDemux::Read() {
         return {};
     }
     XLogi("packet size is %d ,pts is %lld", pkt->size, pkt->pts);
-
+    d.data = reinterpret_cast<unsigned char *>(pkt);
+    d.size = pkt->size;
     return d;
 }
 
