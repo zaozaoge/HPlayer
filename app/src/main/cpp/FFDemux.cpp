@@ -56,6 +56,23 @@ XData FFDemux::Read() {
     return d;
 }
 
+XParameter FFDemux::GetVideoParams() {
+    if (!ic) {
+        XLogi("GetVideoParams failed ic is NULL");
+        return {};
+    }
+    //获取视频流索引
+    int videoIndex = av_find_best_stream(ic, AVMEDIA_TYPE_VIDEO, -1, -1, 0, 0);
+    if (videoIndex < 0) {
+        XLogi("av_find_best_stream failed");
+        return {};
+    }
+    XParameter parameter;
+    parameter.parameters = ic->streams[videoIndex]->codecpar;
+    return parameter;
+}
+
+
 FFDemux::FFDemux() {
     static bool isFirst = true;
     if (isFirst) {

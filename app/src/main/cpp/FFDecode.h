@@ -7,11 +7,16 @@
 
 
 #include "XParameter.h"
-#include "IDeocde.h"
+#include "IDecode.h"
 
-class FFDecode :public IDeocde{
+struct AVCodecContext;
+
+class FFDecode : public IDecode {
+public:
     virtual bool Open(XParameter xParameter);
 
+protected:
+    AVCodecContext *avCodecContext;
 };
 
 

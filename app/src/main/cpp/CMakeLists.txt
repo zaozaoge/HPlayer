@@ -44,7 +44,7 @@ add_library( # Sets the name of the library.
         XLog.cpp
         XThread.cpp
         IObserver.cpp
-        IDeocde.cpp
+        IDecode.cpp
         FFDecode.cpp
         XParameter.cpp)
 

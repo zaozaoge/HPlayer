@@ -6,9 +6,10 @@
 #define ZPLAYER_IDEOCDE_H
 
 #include "XParameter.h"
+#include "IObserver.h"
 
 //解码接口，支持硬解码
-class IDeocde {
+class IDecode :public IObserver{
 public:
 
     //打开解码器
