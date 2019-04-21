@@ -12,7 +12,7 @@ cmake_minimum_required(VERSION 3.4.1)
 include_directories(include)
 
 #设置ffmpeg库所在路径的变量
-set(FF ${CMAKE_CURRENT_SOURCE_DIR}/libs/${ANDROID_ABI})
+set(FF ${CMAKE_CURRENT_SOURCE_DIR}/../../../libs/${ANDROID_ABI})
 
 add_library(avcodec SHARED IMPORTED)
 set_target_properties(avcodec PROPERTIES IMPORTED_LOCATION ${FF}/libavcodec.so)
@@ -37,7 +37,11 @@ add_library( # Sets the name of the library.
         SHARED
 
         # Provides a relative path to your source file(s).
-        native-lib.cpp)
+        native-lib.cpp
+        FFDemux.cpp
+        IDemux.cpp
+        XData.cpp
+        XLog.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -58,9 +62,9 @@ find_library( # Sets the name of the path variable.
 
 target_link_libraries( # Specifies the target library.
         native-lib
-        GLESv2
-        EGL
-        openSLES
+        #        GLESv2
+        #        EGL
+        #        openSLES
         android
         avcodec
         avformat

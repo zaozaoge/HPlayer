@@ -11,7 +11,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
-                cppFlags ""
+                cppFlags "-std=c++11"
             }
             ndk{
                 abiFilters "armeabi-v7a"
@@ -19,7 +19,7 @@ android {
         }
         sourceSets{
             main{
-                jniLibs.srcDirs=["libs"]
+                jniLibs.srcDirs=['libs']
             }
         }
     }
