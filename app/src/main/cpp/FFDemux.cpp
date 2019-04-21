@@ -45,12 +45,12 @@ XData FFDemux::Read() {
     AVPacket *pkt = av_packet_alloc();
     int result = av_read_frame(ic, pkt);
     if (result != 0) {
-        XLogi("av_read_frame  failed!");
+        //XLogi("av_read_frame  failed!");
         //读取失败，释放内存
         av_packet_free(&pkt);
         return {};
     }
-    XLogi("packet size is %d ,pts is %lld", pkt->size, pkt->pts);
+    //XLogi("packet size is %d ,pts is %lld", pkt->size, pkt->pts);
     d.data = reinterpret_cast<unsigned char *>(pkt);
     d.size = pkt->size;
     return d;

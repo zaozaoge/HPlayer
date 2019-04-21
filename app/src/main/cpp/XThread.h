@@ -5,6 +5,8 @@
 #ifndef ZPLAYER_XTHREAD_H
 #define ZPLAYER_XTHREAD_H
 
+//Sleep 毫秒
+void XSleep(int ms);
 //c++ 11线程库
 class XThread {
 public:
@@ -19,6 +21,9 @@ public:
 
     }
 
+protected:
+    bool isExit = false;
+    bool isRunning = false;
 private:
     void ThreadMain();
 };
