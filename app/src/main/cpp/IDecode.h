@@ -22,18 +22,21 @@ public:
     //从线程中获取解码结果
     virtual XData ReceiveFrame() = 0;
 
-    //由主体notify的数据
+    //由主体notify的数据 堵塞
     virtual void Update(XData pkt);
 
     //判断当前是否是音频
     bool isAudio = false;
 
+    //最大的队列缓冲
+    int maxList = 100;
 protected:
 
     virtual void Main();
 
     //读取缓冲
     std::list<XData> packs;
+    std::mutex packetMutex;
 };
 
 
