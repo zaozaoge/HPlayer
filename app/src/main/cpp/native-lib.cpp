@@ -5,6 +5,7 @@
 #include "XLog.h"
 #include "IDecode.h"
 #include "FFDecode.h"
+#include <android/native_window_jni.h>
 
 class TestObs : public IObserver {
 public:
@@ -37,4 +38,11 @@ Java_com_zaozao_hplayer_MainActivity_stringFromJNI(
     //XSleep(3000);
     //de->Stop();
     return env->NewStringUTF(hello.c_str());
+}
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_zaozao_hplayer_XPlay_initView(JNIEnv *env, jobject instance, jobject surface) {
+
+    ANativeWindow *nativeWindow = ANativeWindow_fromSurface(env, surface);
+
 }
