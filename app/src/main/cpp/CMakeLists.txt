@@ -72,9 +72,9 @@ find_library( # Sets the name of the path variable.
 
 target_link_libraries( # Specifies the target library.
         native-lib
-        #        GLESv2
-        #        EGL
-        #        openSLES
+        GLESv2
+        EGL
+        #openGLES
         android
         avcodec
         avformat
