@@ -6,6 +6,7 @@
 #include "IDecode.h"
 #include "FFDecode.h"
 #include "XEGL.h"
+#include "XShader.h"
 #include <android/native_window_jni.h>
 
 class TestObs : public IObserver {
@@ -46,4 +47,6 @@ Java_com_zaozao_hplayer_XPlay_initView(JNIEnv *env, jobject instance, jobject su
 
     ANativeWindow *nativeWindow = ANativeWindow_fromSurface(env, surface);
     XEGL::Get()->Init(nativeWindow);
+    XShader xShader;
+    xShader.Init();
 }

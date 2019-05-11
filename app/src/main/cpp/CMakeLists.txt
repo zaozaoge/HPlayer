@@ -74,7 +74,7 @@ target_link_libraries( # Specifies the target library.
         native-lib
         GLESv2
         EGL
-        #openGLES
+        OpenSLES
         android
         avcodec
         avformat
