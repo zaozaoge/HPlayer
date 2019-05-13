@@ -7,6 +7,8 @@
 #include "FFDecode.h"
 #include "XEGL.h"
 #include "XShader.h"
+#include "IVideoView.h"
+#include "GLVideoView.h"
 #include <android/native_window_jni.h>
 
 class TestObs : public IObserver {
@@ -16,6 +18,8 @@ public:
         // XLogi("TestObs Update data size is %d", data.size);
     }
 };
+
+IVideoView *videoView = nullptr;
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_zaozao_hplayer_MainActivity_stringFromJNI(
@@ -34,6 +38,10 @@ Java_com_zaozao_hplayer_MainActivity_stringFromJNI(
     //添加观察者
     de->AddObs(vDecode);
     de->AddObs(aDecode);
+
+    videoView = new GLVideoView();
+    vDecode->AddObs(videoView);
+
     de->Start();
     vDecode->Start();
     aDecode->Start();
@@ -46,7 +54,8 @@ JNIEXPORT void JNICALL
 Java_com_zaozao_hplayer_XPlay_initView(JNIEnv *env, jobject instance, jobject surface) {
 
     ANativeWindow *nativeWindow = ANativeWindow_fromSurface(env, surface);
-    XEGL::Get()->Init(nativeWindow);
-    XShader xShader;
-    xShader.Init();
+//    XEGL::Get()->Init(nativeWindow);
+//    XShader xShader;
+//    xShader.Init();
+    videoView->SetRender(nativeWindow);
 }

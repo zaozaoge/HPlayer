@@ -7,12 +7,15 @@
 
 
 #include "XData.h"
+#include "IObserver.h"
 
-class IVideoView {
+class IVideoView : public IObserver {
 public:
     virtual void SetRender(void *win) = 0;
+
     virtual void Render(XData data) = 0;
-    virtual void update(XData xData);
+
+    virtual void Update(XData xData);
 };
 
 

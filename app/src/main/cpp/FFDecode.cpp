@@ -46,10 +46,7 @@ bool FFDecode::SendPacket(XData pkt) {
         return false;
     }
     int result = avcodec_send_packet(avCodecContext, reinterpret_cast<const AVPacket *>(pkt.data));
-    if (result != 0) {
-        return false;
-    }
-    return true;
+    return result == 0;
 }
 
 //从线程中获取解码结果
@@ -68,10 +65,13 @@ XData FFDecode::ReceiveFrame() {
     data.data = reinterpret_cast<unsigned char *>(frame);
     if (avCodecContext->codec_type == AVMEDIA_TYPE_VIDEO) {
         data.size = (frame->linesize[0] + frame->linesize[1] + frame->linesize[2]) * frame->height;
+        data.width = frame->width;
+        data.height = frame->height;
     } else {
         //样本字节数*单通道样本数*通道数
         data.size = av_get_bytes_per_sample(AVSampleFormat(frame->format)) * frame->nb_samples * 2;
     }
+    memcpy(data.datas, frame->data, sizeof(data.datas));
     return data;
 
 }

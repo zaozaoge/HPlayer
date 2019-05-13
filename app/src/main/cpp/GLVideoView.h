@@ -7,10 +7,14 @@
 
 
 #include "XData.h"
+#include "IVideoView.h"
+
 class XTexture;
-class GLVideoView {
+
+class GLVideoView : public IVideoView {
 public:
     virtual void SetRender(void *win);
+
     virtual void Render(XData data);
 
 protected:
