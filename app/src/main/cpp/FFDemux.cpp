@@ -103,6 +103,8 @@ XParameter FFDemux::GetAudioParams() {
     audioStreamIndex = audioIndex;
     XParameter parameter;
     parameter.parameters = ic->streams[audioIndex]->codecpar;
+    parameter.channels = ic->streams[audioIndex]->codecpar->channels;
+    parameter.sample_rate = ic->streams[audioIndex]->codecpar->sample_rate;
     return parameter;
 }
 

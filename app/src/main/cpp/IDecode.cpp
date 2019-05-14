@@ -44,7 +44,7 @@ void IDecode::Main() {
                 //获取解码数据
                 XData frame = ReceiveFrame();
                 if (!frame.data)break;
-                XLoge("ReceiveFrame size is %d", frame.size);
+                //XLoge("ReceiveFrame size is %d", frame.size);
                 //发送数据给观察者
                 this->Notify(frame);
 
