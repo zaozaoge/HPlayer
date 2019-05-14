@@ -9,10 +9,14 @@
 #include "IResample.h"
 
 struct SwrContext;
-class FFResample : public IResample{
+
+class FFResample : public IResample {
 
 public:
-    virtual bool Open(XParameter in, XParameter out = XParameter());
+
+    bool Open(XParameter in, XParameter out) override;
+
+    XData Resample(XData inData) override;
 
 protected:
     SwrContext *actx = 0;

@@ -31,6 +31,36 @@ bool FFResample::Open(XParameter in, XParameter out) {
     }
 
     XLogi("swr_init success");
+
+    outChannels = in.parameters->channels;
+    outFormat = AV_SAMPLE_FMT_S16;
     return true;
 
+}
+
+XData FFResample::Resample(XData inData) {
+
+    if (!inData.data || inData.size <= 0)
+        return {};
+    if (!actx)
+        return {};
+    //输出空间的分配
+    XData out;
+    auto *frame = reinterpret_cast<AVFrame *>(inData.data);
+    //通道数*单通道样本数*样本字节大小
+    int outsize = outChannels * frame->nb_samples * av_get_bytes_per_sample(
+            static_cast<AVSampleFormat>(outFormat));
+    if (outsize <= 0)
+        return {};
+    out.Alloc(outsize);
+    uint8_t *outArray[2] = {nullptr};
+    outArray[0] = out.data;
+    int len = swr_convert(actx, outArray, frame->nb_samples,
+                          (const uint8_t **) frame->data, frame->nb_samples);
+    if (len <= 0) {
+        out.Drop();
+        return {};
+    }
+    XLogi("swr_convert success %d", len);
+    return out;
 }
