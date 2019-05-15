@@ -16,6 +16,15 @@ static SLObjectItf player = nullptr;
 static SLPlayItf iplayer = nullptr;
 static SLAndroidSimpleBufferQueueItf pcmQue = nullptr;
 
+SLAudioPlay::SLAudioPlay() {
+    buf = new unsigned char[1024 * 1024];
+}
+
+SLAudioPlay::~SLAudioPlay() {
+    delete buf;
+    buf = nullptr;
+}
+
 static SLEngineItf CreateSL() {
     SLresult re;
     SLEngineItf en;
@@ -48,6 +57,16 @@ void SLAudioPlay::PlayCall(void *bufq) {
     if (!bufq)return;;
     auto bf = (SLAndroidSimpleBufferQueueItf) bufq;
     XLogi("SLAudioPlay::PlayCall");
+    XData d = GetData();
+    if (d.size <= 0) {
+        XLogi("GetData size is 0");
+        return;
+    }
+    if (!buf)
+        return;
+    memcpy(buf, d.data, static_cast<size_t>(d.size));
+    (*bf)->Enqueue(bf, buf, static_cast<SLuint32>(d.size));
+    d.Drop();
 }
 
 bool SLAudioPlay::StartPlay(XParameter out) {

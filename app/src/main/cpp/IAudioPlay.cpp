@@ -7,7 +7,7 @@
 
 void IAudioPlay::Update(XData xData) {
 
-    XLogi("xData size is %d",xData.size);
+    XLogi("xData size is %d", xData.size);
     //压入缓冲队列
     if (!xData.data || xData.size <= 0) {
         return;
@@ -25,3 +25,20 @@ void IAudioPlay::Update(XData xData) {
     }
 
 }
+
+XData IAudioPlay::GetData() {
+    XData d;
+    while (!isExit) {
+        framesMutex.lock();
+        if (!frames.empty()) {
+            d = frames.front();
+            frames.pop_front();
+            framesMutex.unlock();
+            return d;
+        }
+        framesMutex.unlock();
+        XSleep(1);
+    }
+    return d;
+}
+

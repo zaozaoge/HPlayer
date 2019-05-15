@@ -15,7 +15,8 @@ public:
 
     //缓冲满后阻塞
     void Update(XData xData) override;
-
+    //获取缓冲数据，如没有则阻塞
+    virtual XData GetData();
     virtual bool StartPlay(XParameter out) = 0;
 
     //最大缓冲
