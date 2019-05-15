@@ -7,7 +7,6 @@
 
 void IAudioPlay::Update(XData xData) {
 
-    XLogi("xData size is %d", xData.size);
     //压入缓冲队列
     if (!xData.data || xData.size <= 0) {
         return;

@@ -56,7 +56,6 @@ static void PcmCall(SLAndroidSimpleBufferQueueItf bf, void *context) {
 void SLAudioPlay::PlayCall(void *bufq) {
     if (!bufq)return;;
     auto bf = (SLAndroidSimpleBufferQueueItf) bufq;
-    XLogi("SLAudioPlay::PlayCall");
     XData d = GetData();
     if (d.size <= 0) {
         XLogi("GetData size is 0");
@@ -64,8 +63,8 @@ void SLAudioPlay::PlayCall(void *bufq) {
     }
     if (!buf)
         return;
-    memcpy(buf, d.data, static_cast<size_t>(d.size));
-    (*bf)->Enqueue(bf, buf, static_cast<SLuint32>(d.size));
+    memcpy(buf, d.data, d.size);
+    (*bf)->Enqueue(bf, buf, d.size);
     d.Drop();
 }
 

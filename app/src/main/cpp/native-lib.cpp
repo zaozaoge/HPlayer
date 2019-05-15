@@ -34,7 +34,7 @@ Java_com_zaozao_hplayer_MainActivity_stringFromJNI(
     de->Open("/sdcard/DCIM/Camera/VID_20180215_142837.mp4");
     //打开视频解码器
     IDecode *vDecode = new FFDecode();
-    vDecode->Open(de->GetVideoParams());
+    vDecode->Open(de->GetVideoParams(), true);
     //打开音频解码器
     IDecode *aDecode = new FFDecode();
     aDecode->Open(de->GetAudioParams());
@@ -63,6 +63,15 @@ Java_com_zaozao_hplayer_MainActivity_stringFromJNI(
     //de->Stop();
     return env->NewStringUTF(hello.c_str());
 }
+
+
+extern "C"
+JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *res) {
+    FFDecode::InitHard(vm);
+    return JNI_VERSION_1_6;
+}
+
+
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_zaozao_hplayer_XPlay_initView(JNIEnv *env, jobject instance, jobject surface) {

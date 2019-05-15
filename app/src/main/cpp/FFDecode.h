@@ -11,9 +11,13 @@
 
 struct AVCodecContext;
 struct AVFrame;
+
 class FFDecode : public IDecode {
 public:
-    bool Open(XParameter xParameter) override;
+
+    static void InitHard(void *vm);
+
+    bool Open(XParameter xParameter, bool isHard = false) override;
 
     //future模型,发送数据到线程解码
     bool SendPacket(XData pkt) override;
