@@ -33,5 +33,6 @@ bool XData::Alloc(int size, const char *data) {
     if (data) {
         memcpy(this->data, data, static_cast<size_t>(size));
     }
+    this->size = size;
     return true;
 }
