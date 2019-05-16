@@ -95,7 +95,7 @@ XParameter FFDemux::GetAudioParams() {
     }
 
     //获取音频流索引
-    int audioIndex = av_find_best_stream(ic, AVMEDIA_TYPE_AUDIO, -1, -1, 0, 0);
+    int audioIndex = av_find_best_stream(ic, AVMEDIA_TYPE_AUDIO, -1, -1, nullptr, 0);
     if (audioIndex < 0) {
         XLogi("av_find_best_stream failed");
         return {};

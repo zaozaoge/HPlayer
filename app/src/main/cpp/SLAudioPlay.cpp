@@ -79,7 +79,7 @@ bool SLAudioPlay::StartPlay(XParameter out) {
 
     //2、创建混音器
     SLresult re = 0;
-    re = (*eng)->CreateOutputMix(eng, &mix, 0, 0, 0);
+    re = (*eng)->CreateOutputMix(eng, &mix, 0, nullptr, nullptr);
     if (re != SL_RESULT_SUCCESS) {
         XLogi("CreateOutputMix failed");
         return false;
@@ -93,7 +93,7 @@ bool SLAudioPlay::StartPlay(XParameter out) {
     }
     XLogi("mix Realize success");
     SLDataLocator_OutputMix outputMix = {SL_DATALOCATOR_OUTPUTMIX, mix};
-    SLDataSink audioSink = {&outputMix, 0};
+    SLDataSink audioSink = {&outputMix, nullptr};
 
     //3、配置音频信息
     //缓冲队列

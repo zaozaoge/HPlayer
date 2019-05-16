@@ -71,7 +71,7 @@ XData FFDecode::ReceiveFrame() {
         return {};
     }
     XData data;
-    data.data = reinterpret_cast<unsigned char *>(frame);
+    data.data = (unsigned char *) frame;
     if (avCodecContext->codec_type == AVMEDIA_TYPE_VIDEO) {
         data.size = (frame->linesize[0] + frame->linesize[1] + frame->linesize[2]) * frame->height;
         data.width = frame->width;
@@ -81,9 +81,6 @@ XData FFDecode::ReceiveFrame() {
         data.size = av_get_bytes_per_sample(AVSampleFormat(frame->format)) * frame->nb_samples * 2;
     }
     data.format = frame->format;
-//    if (!isAudio) {
-//        XLogi("data format is %d", data.format);
-//    }
     memcpy(data.datas, frame->data, sizeof(data.datas));
     return data;
 

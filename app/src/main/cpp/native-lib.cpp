@@ -29,9 +29,20 @@ Java_com_zaozao_hplayer_MainActivity_stringFromJNI(
         JNIEnv *env,
         jobject /* this */) {
     std::string hello = "Hello from C++";
+
+    //XSleep(3000);
+    //de->Stop();
+    return env->NewStringUTF(hello.c_str());
+}
+
+
+extern "C"
+JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *res) {
+    FFDecode::InitHard(vm);
+
     IDemux *de = new FFDemux();
     auto *obs = new TestObs();
-    de->Open("/sdcard/DCIM/Camera/VID_20180215_142837.mp4");
+    de->Open("/sdcard/tencent/QQfile_recv/v1080.mp4");
     //打开视频解码器
     IDecode *vDecode = new FFDecode();
     vDecode->Open(de->GetVideoParams(), true);
@@ -59,15 +70,6 @@ Java_com_zaozao_hplayer_MainActivity_stringFromJNI(
     de->Start();
     vDecode->Start();
     aDecode->Start();
-    //XSleep(3000);
-    //de->Stop();
-    return env->NewStringUTF(hello.c_str());
-}
-
-
-extern "C"
-JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *res) {
-    FFDecode::InitHard(vm);
     return JNI_VERSION_1_6;
 }
 
