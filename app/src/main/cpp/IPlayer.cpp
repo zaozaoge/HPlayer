@@ -6,6 +6,8 @@
 #include "IDemux.h"
 #include "IDecode.h"
 #include "IResample.h"
+#include "IAudioPlay.h"
+#include "IVideoView.h"
 #include "XLog.h"
 
 IPlayer *IPlayer::Get(unsigned char index) {
@@ -33,7 +35,8 @@ bool IPlayer::Open(const char *path) {
         // return false;
     }
     //重采样，重采样有可能不需要，解码或者解封之后可能是直接能播放的数据
-    XParameter out = demux->GetAudioParams();
+    if (out.sample_rate <= 0)
+        out = demux->GetAudioParams();
     if (!resample || !resample->Open(demux->GetAudioParams(), out)) {
         XLoge("resample open %s failed", path);
     }
@@ -41,6 +44,28 @@ bool IPlayer::Open(const char *path) {
 }
 
 bool IPlayer::Start() {
+    if (!demux || !demux->Start()) {
+        XLoge("demux start failed");
+        return false;
+    }
 
+    if (audioDecode) {
+        audioDecode->Start();
+    }
+    if (audioPlay) {
+        audioPlay->StartPlay(out);
+    }
+
+    if (videoDecode) {
+        videoDecode->Start();
+    }
+    return true;
 }
+
+void IPlayer::InitView(void *win) {
+    if (videoView) {
+        videoView->SetRender(win);
+    }
+}
+
 
