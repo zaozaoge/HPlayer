@@ -12,6 +12,7 @@
 #include "FFResample.h"
 #include "IAudioPlay.h"
 #include "SLAudioPlay.h"
+#include "IPlayer.h"
 #include <android/native_window_jni.h>
 
 class TestObs : public IObserver {
@@ -41,14 +42,13 @@ JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *res) {
     FFDecode::InitHard(vm);
 
     IDemux *de = new FFDemux();
-    auto *obs = new TestObs();
-    de->Open("/sdcard/tencent/QQfile_recv/v1080.mp4");
+    //de->Open("/sdcard/tencent/QQfile_recv/v1080.mp4");
     //打开视频解码器
     IDecode *vDecode = new FFDecode();
-    vDecode->Open(de->GetVideoParams(), true);
+    //vDecode->Open(de->GetVideoParams(), true);
     //打开音频解码器
     IDecode *aDecode = new FFDecode();
-    aDecode->Open(de->GetAudioParams());
+    //aDecode->Open(de->GetAudioParams());
     //添加观察者
     de->AddObs(vDecode);
     de->AddObs(aDecode);
@@ -60,16 +60,26 @@ JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *res) {
     IResample *resample = new FFResample();
     XParameter outParams = de->GetAudioParams();
 
-    resample->Open(de->GetAudioParams(), outParams);
+    //resample->Open(de->GetAudioParams(), outParams);
     aDecode->AddObs(resample);
 
     IAudioPlay *audioPlay = new SLAudioPlay();
-    audioPlay->StartPlay(outParams);
+    // audioPlay->StartPlay(outParams);
     resample->AddObs(audioPlay);
 
-    de->Start();
-    vDecode->Start();
-    aDecode->Start();
+    //de->Start();
+    // vDecode->Start();
+    // aDecode->Start();
+
+    IPlayer::Get()->demux = de;
+    IPlayer::Get()->audioDecode = aDecode;
+    IPlayer::Get()->videoDecode = vDecode;
+    IPlayer::Get()->resample = resample;
+    IPlayer::Get()->audioPlay = audioPlay;
+    IPlayer::Get()->videoView = videoView;
+    IPlayer::Get()->Open("/sdcard/tencent/QQfile_recv/v1080.mp4");
+
+
     return JNI_VERSION_1_6;
 }
 
