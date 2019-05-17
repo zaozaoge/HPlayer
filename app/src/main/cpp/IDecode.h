@@ -13,6 +13,9 @@
 class IDecode : public IObserver {
 public:
 
+    static void InitHard(void *vm);
+
+
     //打开解码器
     virtual bool Open(XParameter xParameter, bool isHard = false) = 0;
 
