@@ -58,7 +58,8 @@ add_library( # Sets the name of the library.
         SLAudioPlay.cpp
         IPlayer.cpp
         IPlayerBuilder.cpp
-        FFPlayerBuilder.cpp)
+        FFPlayerBuilder.cpp
+        IPlayProxy.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
