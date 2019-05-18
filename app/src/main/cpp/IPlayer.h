@@ -6,6 +6,7 @@
 #define ZPLAYER_IPLAYER_H
 
 
+#include <mutex>
 #include "XThread.h"
 #include "XParameter.h"
 
@@ -39,9 +40,9 @@ public:
     IAudioPlay *audioPlay = nullptr;
     IVideoView *videoView = nullptr;
 protected:
-    IPlayer(){
-
-    }
+    void Main() override;
+    std::mutex mutex;
+    IPlayer() = default;
 
 };
 

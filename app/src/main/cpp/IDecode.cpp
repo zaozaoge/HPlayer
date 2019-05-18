@@ -29,6 +29,17 @@ void IDecode::Update(XData pkt) {
 void IDecode::Main() {
     while (!isExit) {
         packetMutex.lock();
+
+        //判断音视频同步
+
+        if (!isAudio && synPTS > 0) {
+            if (synPTS < pts) {
+                //音频播放慢于视频播放速度，则挺下来等待音频
+                packetMutex.unlock();
+                XSleep(1);
+                continue;
+            }
+        }
         if (packs.empty()) {
             packetMutex.unlock();
             XSleep(1);
@@ -45,6 +56,7 @@ void IDecode::Main() {
                 XData frame = ReceiveFrame();
                 if (!frame.data)break;
                 //XLoge("ReceiveFrame size is %d", frame.size);
+                pts = frame.pts;
                 //发送数据给观察者
                 this->Notify(frame);
 

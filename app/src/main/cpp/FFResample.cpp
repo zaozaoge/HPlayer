@@ -61,6 +61,7 @@ XData FFResample::Resample(XData inData) {
         out.Drop();
         return {};
     }
+    out.pts = inData.pts;
     //XLogi("swr_convert success %d", len);
     return out;
 }

@@ -17,10 +17,11 @@ IPlayer *IPlayer::Get(unsigned char index) {
 }
 
 bool IPlayer::Open(const char *path) {
-
+    mutex.lock();
     //解封装
     if (!demux || !demux->Open(path)) {
         XLoge("demux open %s failed", path);
+        mutex.unlock();
         return false;
     }
 
@@ -40,12 +41,16 @@ bool IPlayer::Open(const char *path) {
     if (!resample || !resample->Open(demux->GetAudioParams(), out)) {
         XLoge("resample open %s failed", path);
     }
+    mutex.unlock();
     return true;
 }
 
 bool IPlayer::Start() {
+
+    mutex.lock();
     if (!demux || !demux->Start()) {
         XLoge("demux start failed");
+        mutex.unlock();
         return false;
     }
 
@@ -59,6 +64,8 @@ bool IPlayer::Start() {
     if (videoDecode) {
         videoDecode->Start();
     }
+    XThread::Start();
+    mutex.unlock();
     return true;
 }
 
@@ -67,6 +74,28 @@ void IPlayer::InitView(void *win) {
         videoView->SetRender(win);
     }
 }
+
+void IPlayer::Main() {
+
+    while (!isExit) {
+        mutex.lock();
+        if (!audioPlay || !videoDecode) {
+            //如果音频播放或者视频解码器有一个不存在，则不用做同步
+            mutex.unlock();
+            XSleep(2);
+            continue;
+        }
+        //同步
+        //获取音频的pts告诉视频
+        int apts = audioPlay->pts;
+        videoDecode->synPTS = apts;
+        mutex.unlock();
+        XSleep(2);
+    }
+}
+
+
+
 
 
 

@@ -33,6 +33,11 @@ public:
 
     //最大的队列缓冲
     int maxList = 100;
+
+    //同步时间，再次打开文件要清零
+    int synPTS = 0;
+    //当前播放到的位置
+    int pts = 0;
 protected:
 
     virtual void Main();

@@ -12,6 +12,11 @@ extern "C" {
 #include "include/libavutil/avutil.h"
 }
 
+//分数转换为浮点数
+static double r2d(AVRational r) {
+    return r.num == 0 || r.den == 0 ? 0. : (double) r.num / (double) r.den;
+}
+
 //打开文件或者流媒体 rtmp http rtsp
 bool FFDemux::Open(const char *url) {
     XLogi("open file %s begin", url);
@@ -66,6 +71,13 @@ XData FFDemux::Read() {
         av_packet_free(&pkt);
         return {};
     }
+
+    //转换pts
+    pkt->pts = (int) (pkt->pts * (1000 * r2d(ic->streams[pkt->stream_index]->time_base)));
+    pkt->dts = (int) (pkt->dts * (1000 * r2d(ic->streams[pkt->stream_index]->time_base)));
+    d.pts = (int) pkt->pts;
+
+
     return d;
 }
 
