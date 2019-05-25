@@ -14,13 +14,14 @@ struct AVFormatContext;
 class FFDemux : public IDemux {
 public:
     //打开文件或者流媒体 rtmp http rtsp
-    virtual bool Open(const char *url);
+    bool Open(const char *url) override;
 
+    virtual void Close();
     //获取视频参数
-    virtual XParameter GetVideoParams();
+    XParameter GetVideoParams() override;
 
     //获取音频参数
-    virtual XParameter GetAudioParams();
+    XParameter GetAudioParams() override;
 
     //读取一帧数据，数据由调用者清理
     virtual XData Read();
@@ -28,7 +29,8 @@ public:
     FFDemux();
 
 private:
-    AVFormatContext *ic = 0;
+    AVFormatContext *ic = nullptr;
+    std::mutex mutex;
     int audioStreamIndex = 1;
     int videoSteamIndex = 0;
 };
