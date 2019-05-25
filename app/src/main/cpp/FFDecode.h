@@ -19,6 +19,7 @@ public:
 
     bool Open(XParameter xParameter, bool isHard = false) override;
 
+    virtual void Close();
     //future模型,发送数据到线程解码
     bool SendPacket(XData pkt) override;
 
@@ -27,7 +28,8 @@ public:
 
 protected:
     AVCodecContext *avCodecContext;
-    AVFrame *frame = 0;
+    AVFrame *frame = nullptr;
+    std::mutex mutex;
 
 };
 
