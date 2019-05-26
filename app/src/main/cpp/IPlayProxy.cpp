@@ -4,13 +4,16 @@
 
 #include "IPlayProxy.h"
 #include "FFPlayerBuilder.h"
+#include "XLog.h"
 
 bool IPlayProxy::Open(const char *path) {
     bool result = false;
+    XLoge("打开文件：%s", path);
     mutex.lock();
     if (player) {
         result = player->Open(path);
     }
+    XLoge("打开文件：%d", result);
     mutex.unlock();
     return result;
 
@@ -26,10 +29,13 @@ void IPlayProxy::InitView(void *win) {
 
 bool IPlayProxy::Start() {
     bool result = false;
+    XLoge("开始执行");
     mutex.lock();
+    XLoge("开启线程");
     if (player) {
         result = player->Start();
     }
+    XLoge("开启线程结束");
     mutex.unlock();
     return result;
 }
@@ -41,6 +47,14 @@ void IPlayProxy::Init(void *vm) {
     }
     if (!player) {
         player = FFPlayerBuilder::Get()->BuilderPlayer();
+    }
+    mutex.unlock();
+}
+
+void IPlayProxy::Close() {
+    mutex.lock();
+    if (player) {
+        player->Close();
     }
     mutex.unlock();
 }

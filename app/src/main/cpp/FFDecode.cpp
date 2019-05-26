@@ -100,6 +100,7 @@ XData FFDecode::ReceiveFrame() {
 }
 
 void FFDecode::Close() {
+    IDecode::Clear();
     mutex.lock();
     pts = 0;
     if (frame) {

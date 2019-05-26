@@ -44,3 +44,12 @@ XData IAudioPlay::GetData() {
     return d;
 }
 
+void IAudioPlay::Clear() {
+    framesMutex.lock();
+    while (!frames.empty()) {
+        frames.front().Drop();
+        frames.pop_front();
+    }
+    framesMutex.unlock();
+}
+

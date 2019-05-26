@@ -117,7 +117,8 @@ XParameter FFDemux::GetVideoParams() {
 XParameter FFDemux::GetAudioParams() {
     mutex.lock();
     if (!ic) {
-        XLogi("GetAudioParams failed ic is NULL");
+        XLoge("GetAudioParams failed ic is NULL");
+        mutex.unlock();
         return {};
     }
 

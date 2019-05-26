@@ -16,8 +16,7 @@ public:
 
     SLAudioPlay();
 
-    virtual void Close();
-
+    void Close() override;
 
     virtual ~SLAudioPlay();
 

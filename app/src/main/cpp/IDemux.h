@@ -31,7 +31,7 @@ public:
     //总时长（毫秒）
     int totalMs = 0;
 protected:
-    virtual void Main();
+    void Main() override;
 };
 
 

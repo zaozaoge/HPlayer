@@ -24,8 +24,18 @@ JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *res) {
 
 
     IPlayProxy::Get()->Init(vm);
+
     IPlayProxy::Get()->Open("/sdcard/tencent/QQfile_recv/v1080.mp4");
     IPlayProxy::Get()->Start();
+
+    IPlayProxy::Get()->Open("/sdcard/DCIM/Camera/VID_20190503_100122.mp4");
+    IPlayProxy::Get()->Start();
+
+
+//    IPlayProxy::Get()->Open("/sdcard/tencent/QQfile_recv/v1080.mp4");
+//    IPlayProxy::Get()->Start();
+
+
     return JNI_VERSION_1_6;
 }
 

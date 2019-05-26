@@ -68,3 +68,15 @@ void IDecode::Main() {
 
 }
 
+void IDecode::Clear() {
+
+    packetMutex.lock();
+    while (!packs.empty()){
+        packs.front().Drop();
+        packs.pop_front();
+    }
+    pts = 0;
+    synPTS = 0;
+    packetMutex.unlock();
+}
+
