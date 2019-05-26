@@ -21,6 +21,8 @@ public:
 
     virtual bool StartPlay(XParameter out = XParameter()) = 0;
 
+    virtual void Close() = 0;
+
     //最大缓冲
     int maxFrames = 100;
 

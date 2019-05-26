@@ -16,10 +16,14 @@ public:
 
     SLAudioPlay();
 
+    virtual void Close();
+
+
     virtual ~SLAudioPlay();
 
 protected:
     unsigned char *buf = nullptr;
+    std::mutex mutex;
 };
 
 
