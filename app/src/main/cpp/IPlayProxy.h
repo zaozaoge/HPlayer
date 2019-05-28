@@ -19,12 +19,12 @@ public:
 
     void Init(void *vm = 0);
 
-    virtual bool Open(const char *path);
+    bool Open(const char *path) override;
 
-    virtual void Close();
+    void Close() override;
     bool Start() override;
 
-    virtual void InitView(void *win);
+    void InitView(void *win) override;
 
 
 protected:

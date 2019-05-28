@@ -65,13 +65,14 @@ void SLAudioPlay::PlayCall(void *bufq) {
         return;
     memcpy(buf, d.data, d.size);
     mutex.lock();
-    (*bf)->Enqueue(bf, buf, d.size);
+    if (pcmQue && (*pcmQue))
+        (*pcmQue)->Enqueue(pcmQue, buf, d.size);
     mutex.unlock();
     d.Drop();
 }
 
 bool SLAudioPlay::StartPlay(XParameter out) {
-   // Close();
+    // Close();
     mutex.lock();
     //1、创建引擎
     eng = CreateSL();
@@ -198,6 +199,13 @@ void SLAudioPlay::Close() {
     }
     XLoge("开始释放锁");
 
+
+    engineSL = nullptr;
+    eng = nullptr;
+    mix = nullptr;
+    player = nullptr;
+    iplayer = nullptr;
+    pcmQue = nullptr;
     mutex.unlock();
     XLoge("开始完成");
 

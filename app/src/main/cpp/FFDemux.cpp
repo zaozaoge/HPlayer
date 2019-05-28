@@ -32,7 +32,7 @@ bool FFDemux::Open(const char *url) {
     }
     XLogi("FFDemux open %s success!", url);
     //读取文件信息
-    result = avformat_find_stream_info(ic, 0);
+    result = avformat_find_stream_info(ic, nullptr);
     if (result != 0) {
         char buf[1024] = {0};
         av_strerror(result, buf, sizeof(buf));
@@ -100,7 +100,7 @@ XParameter FFDemux::GetVideoParams() {
         return {};
     }
     //获取视频流索引
-    int videoIndex = av_find_best_stream(ic, AVMEDIA_TYPE_VIDEO, -1, -1, 0, 0);
+    int videoIndex = av_find_best_stream(ic, AVMEDIA_TYPE_VIDEO, -1, -1, nullptr, 0);
     if (videoIndex < 0) {
         XLogi("av_find_best_stream failed");
         mutex.unlock();
