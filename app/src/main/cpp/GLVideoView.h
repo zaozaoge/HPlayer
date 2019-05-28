@@ -19,6 +19,9 @@ public:
 
     void Close() override;
 
+    bool IsReady() override;
+
+
 protected:
     void *view = nullptr;
     XTexture *txt = nullptr;

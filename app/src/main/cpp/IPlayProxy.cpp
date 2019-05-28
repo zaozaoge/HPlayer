@@ -11,6 +11,7 @@ bool IPlayProxy::Open(const char *path) {
     XLoge("打开文件：%s", path);
     mutex.lock();
     if (player) {
+        player->isHardDecode = isHardDecode;
         result = player->Open(path);
     }
     XLoge("打开文件：%d", result);
@@ -57,4 +58,25 @@ void IPlayProxy::Close() {
         player->Close();
     }
     mutex.unlock();
+}
+
+double IPlayProxy::PlayPos() {
+
+    mutex.lock();
+    double pos = 0.0;
+    if (player) {
+        pos = player->PlayPos();
+    }
+    mutex.unlock();
+    return pos;
+}
+
+bool IPlayProxy::IsReady() {
+    mutex.lock();
+    if (player) {
+        mutex.unlock();
+        return player->IsReady();
+    }
+    mutex.unlock();
+    return false;
 }

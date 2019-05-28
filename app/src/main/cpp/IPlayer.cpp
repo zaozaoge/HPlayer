@@ -135,6 +135,32 @@ void IPlayer::Main() {
     }
 }
 
+double IPlayer::PlayPos() {
+    double pos = 0.0;
+    mutex.lock();
+    int total = 0;
+    if (demux) {
+        total = demux->totalMs;
+    }
+    if (total > 0) {
+        if (videoDecode) {
+            pos = (double) videoDecode->pts / (double) total;
+        }
+    } else {
+        mutex.unlock();
+        return -1;
+    }
+    mutex.unlock();
+    return pos;
+}
+
+bool IPlayer::IsReady() {
+    if (videoView) {
+        return videoView->IsReady();
+    }
+    return false;
+}
+
 
 
 

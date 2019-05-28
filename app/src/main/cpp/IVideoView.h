@@ -15,9 +15,15 @@ public:
 
     virtual void Render(XData data) = 0;
 
-    virtual void Update(XData xData);
+    void Update(XData xData) override;
 
     virtual void Close() = 0;
+
+    //是否已经开始渲染画面
+    virtual bool IsReady() = 0;
+
+
+    bool isReady = false;
 };
 
 

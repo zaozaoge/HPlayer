@@ -16,16 +16,21 @@ void GLVideoView::Render(XData data) {
 
     if (!txt) {
         txt = XTexture::Create();
-        txt->Init(view, (XTextureType) data.format);
+        isReady = txt->Init(view, (XTextureType) data.format);
     }
     txt->Draw(data.datas, data.width, data.height);
 }
 
 void GLVideoView::Close() {
     mutex.lock();
-    if(txt){
+    if (txt) {
         txt->Drop();
         txt = nullptr;
     }
+    isReady = false;
     mutex.unlock();
+}
+
+bool GLVideoView::IsReady() {
+    return isReady;
 }

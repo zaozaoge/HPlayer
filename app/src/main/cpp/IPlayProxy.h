@@ -21,7 +21,12 @@ public:
 
     bool Open(const char *path) override;
 
+    double PlayPos() override;
+
+    bool IsReady() override;
+
     void Close() override;
+
     bool Start() override;
 
     void InitView(void *win) override;
