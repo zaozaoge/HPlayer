@@ -7,6 +7,7 @@
 
 //Sleep 毫秒
 void XSleep(int ms);
+
 //c++ 11线程库
 class XThread {
 public:
@@ -16,6 +17,13 @@ public:
     //通过控制isExit安全停止线程，不一定成功
     virtual void Stop();
 
+    virtual void SetPause(bool isPause);
+
+    virtual bool IsPause() {
+        isPausing = isPause;
+        return isPause;
+    }
+
     //入口主函数
     virtual void Main() {
 
@@ -24,6 +32,8 @@ public:
 protected:
     bool isExit = false;
     bool isRunning = false;
+    bool isPause = false;
+    bool isPausing = false;
 private:
     void ThreadMain();
 };

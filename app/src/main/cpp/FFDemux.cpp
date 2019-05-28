@@ -160,3 +160,24 @@ void FFDemux::Close() {
     }
     mutex.unlock();
 }
+
+bool FFDemux::Seek(double pos) {
+    if (pos < 0 || pos > 1) {
+        XLoge("pos must 0.0-1.0");
+        return false;
+    }
+    bool result;
+    mutex.lock();
+    if (!ic) {
+        mutex.unlock();
+        return false;
+    }
+    //清空读写的数据
+    avformat_flush(ic);
+    long long seekPts = 0;
+    seekPts = ic->streams[videoSteamIndex]->duration * pos;
+    //往后跳转到关键帧
+    result = av_seek_frame(ic, videoSteamIndex, seekPts, AVSEEK_FLAG_FRAME | AVSEEK_FLAG_BACKWARD);
+    mutex.unlock();
+    return result;
+}

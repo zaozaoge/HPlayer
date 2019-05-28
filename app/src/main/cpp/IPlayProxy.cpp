@@ -80,3 +80,31 @@ bool IPlayProxy::IsReady() {
     mutex.unlock();
     return false;
 }
+
+bool IPlayProxy::Seek(double pos) {
+    bool result = false;
+    mutex.lock();
+    if (player) {
+        result = player->Seek(pos);
+    }
+    mutex.unlock();
+    return result;
+}
+
+void IPlayProxy::SetPause(bool isPause) {
+    mutex.lock();
+    if (player) {
+        player->SetPause(isPause);
+    }
+    mutex.unlock();
+}
+
+bool IPlayProxy::IsPause() {
+    bool result = false;
+    mutex.lock();
+    if (player) {
+        result = player->IsPause();
+    }
+    mutex.unlock();
+    return result;
+}

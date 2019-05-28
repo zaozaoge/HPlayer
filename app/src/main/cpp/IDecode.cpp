@@ -28,6 +28,11 @@ void IDecode::Update(XData pkt) {
 
 void IDecode::Main() {
     while (!isExit) {
+        if (IsPause()) {
+            XSleep(2);
+            continue;
+        }
+
         packetMutex.lock();
 
         //判断音视频同步
@@ -71,7 +76,7 @@ void IDecode::Main() {
 void IDecode::Clear() {
 
     packetMutex.lock();
-    while (!packs.empty()){
+    while (!packs.empty()) {
         packs.front().Drop();
         packs.pop_front();
     }

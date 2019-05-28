@@ -56,6 +56,8 @@ Java_com_zaozao_hplayer_PlayActivity_open(JNIEnv *env, jobject instance, jstring
     // IPlayProxy::Get()->Open("rtmp://live.hkstv.hk.lxdns.com/live/hks2"); //香港卫视
     IPlayProxy::Get()->Open(path); //香港卫视
     IPlayProxy::Get()->Start();
+
+    //IPlayProxy::Get()->Seek(0.5);
     env->ReleaseStringUTFChars(path_, path);
 }
 
@@ -65,4 +67,9 @@ Java_com_zaozao_hplayer_PlayActivity_getPlayProgress(JNIEnv *env, jobject instan
 
     return IPlayProxy::Get()->PlayPos();
 
+}extern "C"
+JNIEXPORT void JNICALL
+Java_com_zaozao_hplayer_XPlay_playOrPause(JNIEnv *env, jobject instance) {
+
+    IPlayProxy::Get()->SetPause(!IPlayProxy::Get()->IsPause());
 }

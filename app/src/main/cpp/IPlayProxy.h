@@ -29,6 +29,12 @@ public:
 
     bool Start() override;
 
+    bool Seek(double pos) override;
+
+    void SetPause(bool isPause) override;
+
+    bool IsPause() override;
+
     void InitView(void *win) override;
 
 

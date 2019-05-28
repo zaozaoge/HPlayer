@@ -33,8 +33,12 @@ public:
 
     virtual void InitView(void *win);
 
+    void SetPause(bool isPause) override;
+
+
     //获取当前的播放信息
     virtual double PlayPos();
+    virtual bool Seek(double pos);
 
     virtual bool IsReady();
 

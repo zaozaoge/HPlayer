@@ -17,6 +17,7 @@ void XSleep(int ms) {
 //启动线程
 bool XThread::Start() {
     isExit = false;
+    isPause = false;
     thread th(&XThread::ThreadMain, this);//启动线程
     th.detach();//放弃对该线程的控制，防止对象清空时相关的资源造成该线程出错
     return true;
@@ -43,4 +44,15 @@ void XThread::Stop() {
 
     }
     XLogi("停止线程超时!")
+}
+
+void XThread::SetPause(bool isPause) {
+    this->isPause = isPause;
+    //等待100毫秒
+    for (int i = 0; i < 10; i++) {
+        if (isPausing == isPause) {
+            break;
+        }
+        XSleep(10);
+    }
 }

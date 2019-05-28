@@ -161,6 +161,34 @@ bool IPlayer::IsReady() {
     return false;
 }
 
+bool IPlayer::Seek(double pos) {
+    bool result = false;
+    mutex.lock();
+    if (demux) {
+        result = demux->Seek(pos);
+    }
+    mutex.unlock();
+    return result;
+}
+
+void IPlayer::SetPause(bool isPause) {
+    mutex.lock();
+    XThread::SetPause(isPause);
+    if (demux) {
+        demux->SetPause(isPause);
+    }
+    if (videoDecode) {
+        videoDecode->SetPause(isPause);
+    }
+    if (audioDecode) {
+        audioDecode->SetPause(isPause);
+    }
+    if (audioPlay) {
+        audioPlay->SetPause(isPause);
+    }
+    mutex.unlock();
+}
+
 
 
 
