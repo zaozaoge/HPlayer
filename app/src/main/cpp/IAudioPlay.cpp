@@ -28,10 +28,7 @@ void IAudioPlay::Update(XData xData) {
 XData IAudioPlay::GetData() {
     XData d;
     isRunning = true;
-   // XLoge("isExit----->%d",isExit);
     while (!isExit) {
-      //  XLoge("isPause----->%d",IsPause());
-
         if (IsPause()) {
             XSleep(2);
             continue;

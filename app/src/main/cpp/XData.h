@@ -13,8 +13,8 @@ enum XDataType {
 struct XData {
     int type = 0;
     int pts = 0;
-    unsigned char *data = 0;
-    unsigned char *datas[8] = {0};
+    unsigned char *data = nullptr;
+    unsigned char *datas[8] = {nullptr};
     int size = 0;
     bool isAudio = false;
     int width = 0;

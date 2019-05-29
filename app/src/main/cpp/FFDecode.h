@@ -20,6 +20,9 @@ public:
     bool Open(XParameter xParameter, bool isHard = false) override;
 
     virtual void Close();
+
+    void Clear() override;
+
     //future模型,发送数据到线程解码
     bool SendPacket(XData pkt) override;
 

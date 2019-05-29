@@ -112,3 +112,13 @@ void FFDecode::Close() {
     }
     mutex.unlock();
 }
+
+void FFDecode::Clear() {
+    IDecode::Clear();
+    mutex.lock();
+    if (avCodecContext) {
+        //清理缓冲
+        avcodec_flush_buffers(avCodecContext);
+    }
+    mutex.unlock();
+}

@@ -11,14 +11,27 @@
         android:layout_height="match_parent" />
 
 
-    <Button
-        android:id="@+id/open"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:onClick="openResource"
-        android:textColor="@color/colorAccent"
-        android:text="start" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/open"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="openResource"
+            android:text="@string/start"
+            android:textColor="@color/colorAccent" />
+
+        <android.support.v7.widget.AppCompatSeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical" />
+    </LinearLayout>
+
 
     <android.support.v4.widget.ContentLoadingProgressBar
         android:id="@+id/contentLoading"

@@ -29,7 +29,7 @@ public:
     virtual XData ReceiveFrame() = 0;
 
     //由主体notify的数据 堵塞
-    virtual void Update(XData pkt);
+    void Update(XData pkt) override;
 
     //判断当前是否是音频
     bool isAudio = false;

@@ -57,7 +57,6 @@ Java_com_zaozao_hplayer_PlayActivity_open(JNIEnv *env, jobject instance, jstring
     IPlayProxy::Get()->Open(path); //香港卫视
     IPlayProxy::Get()->Start();
 
-    //IPlayProxy::Get()->Seek(0.5);
     env->ReleaseStringUTFChars(path_, path);
 }
 
@@ -72,4 +71,16 @@ JNIEXPORT void JNICALL
 Java_com_zaozao_hplayer_XPlay_playOrPause(JNIEnv *env, jobject instance) {
 
     IPlayProxy::Get()->SetPause(!IPlayProxy::Get()->IsPause());
+}
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_zaozao_hplayer_PlayActivity_seek(JNIEnv *env, jobject instance, jdouble pos) {
+    IPlayProxy::Get()->Seek(pos);
+}
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_zaozao_hplayer_PlayActivity_close(JNIEnv *env, jobject instance) {
+
+    IPlayProxy::Get()->Close();
+
 }

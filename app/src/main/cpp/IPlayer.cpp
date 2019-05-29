@@ -164,12 +164,54 @@ bool IPlayer::IsReady() {
 }
 
 bool IPlayer::Seek(double pos) {
-    bool result = false;
+    bool result;
+    if (!demux)
+        return false;
+    //暂停所有线程
+    SetPause(true);
     mutex.lock();
-    if (demux) {
-        result = demux->Seek(pos);
+    //清理缓冲队列
+    if (videoDecode)
+        videoDecode->Clear();//清理缓冲队列和FFmpeg的缓冲
+    if (audioDecode)
+        audioDecode->Clear();
+    if (audioPlay)
+        audioPlay->Clear();
+
+    result = demux->Seek(pos);
+    if (!videoDecode) {
+        mutex.unlock();
+        SetPause(false);
+        return false;
+    }
+    //解码到实际需要显示的帧
+    double seekPts = pos * demux->totalMs;
+    while (!isExit) {
+        XData pkt = demux->Read();
+        if (pkt.size <= 0)
+            break;
+        if (pkt.isAudio) {
+            if (pkt.pts < seekPts) {
+                pkt.Drop();
+                continue;
+            }
+            //写入缓冲队列
+            demux->Notify(pkt);
+            continue;
+        }
+        //解码需要显示的帧之前的数据
+        videoDecode->SendPacket(pkt);
+        pkt.Drop();
+        XData xData = videoDecode->ReceiveFrame();
+        if (xData.size <= 0) {
+            continue;
+        }
+        if (xData.pts >= seekPts) {
+            break;
+        }
     }
     mutex.unlock();
+    SetPause(false);
     return result;
 }
 
