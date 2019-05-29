@@ -28,7 +28,7 @@ SLAudioPlay::~SLAudioPlay() {
 static SLEngineItf CreateSL() {
     SLresult re;
     SLEngineItf en;
-    re = slCreateEngine(&engineSL, 0, 0, 0, 0, 0);
+    re = slCreateEngine(&engineSL, 0, nullptr, 0, nullptr, nullptr);
     if (re != SL_RESULT_SUCCESS)
         return nullptr;
     re = (*engineSL)->Realize(engineSL, SL_BOOLEAN_FALSE);
@@ -55,24 +55,23 @@ static void PcmCall(SLAndroidSimpleBufferQueueItf bf, void *context) {
 
 void SLAudioPlay::PlayCall(void *bufq) {
     if (!bufq)return;
-    auto bf = (SLAndroidSimpleBufferQueueItf) bufq;
     XData d = GetData();
     if (d.size <= 0) {
         XLogi("GetData size is 0");
+        d.Drop();
         return;
     }
     if (!buf)
         return;
-    memcpy(buf, d.data, d.size);
+    memcpy(buf, d.data, static_cast<size_t>(d.size));
     mutex.lock();
     if (pcmQue && (*pcmQue))
-        (*pcmQue)->Enqueue(pcmQue, buf, d.size);
+        (*pcmQue)->Enqueue(pcmQue, buf, static_cast<SLuint32>(d.size));
     mutex.unlock();
     d.Drop();
 }
 
 bool SLAudioPlay::StartPlay(XParameter out) {
-    // Close();
     mutex.lock();
     //1、创建引擎
     eng = CreateSL();
@@ -157,6 +156,7 @@ bool SLAudioPlay::StartPlay(XParameter out) {
     //启动队列回调
     (*pcmQue)->Enqueue(pcmQue, "", 1);
     XLogi("SLAudioPlay::StartPlay success");
+    isExit = false;
     mutex.unlock();
     return true;
 }

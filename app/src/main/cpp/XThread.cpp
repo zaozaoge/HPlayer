@@ -35,13 +35,13 @@ void XThread::ThreadMain() {
 //通过控制isExit安全停止线程，不一定成功
 void XThread::Stop() {
     isExit = true;
+    isPause = false;
     for (int i = 1; i <= 200; i++) {
         if (!isRunning) {
             XLogi("停止线程成功！")
             return;
         }
         XSleep(1);
-
     }
     XLogi("停止线程超时!")
 }

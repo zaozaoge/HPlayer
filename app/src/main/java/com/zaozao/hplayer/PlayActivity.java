@@ -43,8 +43,8 @@ public class PlayActivity extends Activity implements Runnable {
 
     @Override
     public void run() {
-        //open("/sdcard/tencent/QQfile_recv/v1080.mp4");
-        open("rtmp://live.hkstv.hk.lxdns.com/live/hks2");
+        open("/sdcard/tencent/QQfile_recv/v1080.mp4");
+        //open("rtmp://live.hkstv.hk.lxdns.com/live/hks2");
 
         while (true) {
             double progress = getPlayProgress();

@@ -27,12 +27,15 @@ void IAudioPlay::Update(XData xData) {
 
 XData IAudioPlay::GetData() {
     XData d;
+    isRunning = true;
+   // XLoge("isExit----->%d",isExit);
     while (!isExit) {
+      //  XLoge("isPause----->%d",IsPause());
+
         if (IsPause()) {
             XSleep(2);
             continue;
         }
-
         framesMutex.lock();
         if (!frames.empty()) {
             //有数据返回
@@ -40,11 +43,15 @@ XData IAudioPlay::GetData() {
             frames.pop_front();
             framesMutex.unlock();
             pts = d.pts;
+           // XLoge("获取音频播放数据");
             return d;
         }
-        framesMutex.unlock();
         XSleep(1);
+        isRunning = false;
+        framesMutex.unlock();
     }
+    XLoge("退出音频播放");
+    isRunning = false;
     //未获取数据
     return d;
 }

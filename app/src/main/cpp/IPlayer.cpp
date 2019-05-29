@@ -29,6 +29,8 @@ void IPlayer::Close() {
         videoDecode->Stop();
     if (audioDecode)
         audioDecode->Stop();
+    if (audioPlay)
+        audioPlay->Stop();
     //清理缓冲队列
     if (videoDecode)
         videoDecode->Clear();
